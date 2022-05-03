@@ -3,7 +3,7 @@
 
 ## Getting started
 
-`$ yarn add https://github.com/estuardoeg/react-native-cybersource-device-fingerprint`
+`$ yarn add https://github.com/Idea-Maker/react-native-cybersource-device-fingerprint`
 
 ### Manual installation
 
