@@ -38,9 +38,9 @@ public class RNCybersourceDeviceFingerprintModule extends ReactContextBaseJavaMo
     }
 
     @ReactMethod
-    public void configure(final String orgId, /*final String serverURL, */final Promise promise) {
+    public void configure(final String orgId, final String serverURL, final Promise promise) {
         if (_defender != null) {
-            promise.reject(CYBERSOURCE_SDK, "CyberSource SDK is already initialised");
+            promise.reject(CYBERSOURCE_SDK, "CyberSource SDK já foi iniciado.");
             return;
         }
 
@@ -49,34 +49,29 @@ public class RNCybersourceDeviceFingerprintModule extends ReactContextBaseJavaMo
         try {
             TMXConfig config = new TMXConfig()
                     .setOrgId(orgId)
-                    //.setFPServer(serverURL)
+                    .setFPServer(serverURL)
                     .setContext(_application);
+
             _defender.init(config);
         } catch (IllegalArgumentException exception) {
-            promise.reject(CYBERSOURCE_SDK, "Invalid parameters");
+            promise.reject(CYBERSOURCE_SDK, "Parâmetros inválidos");
         }
 
         promise.resolve(true);
     }
 
     @ReactMethod
-    public void getSessionID(final ReadableArray attributes, final Promise promise) {
+    public void getSessionID(final String fingerprintKey, final Promise promise) {
         if (_defender == null) {
-            promise.reject(CYBERSOURCE_SDK, "CyberSource SDK is not yet initialised");
+            promise.reject(CYBERSOURCE_SDK, "CyberSource SDK não foi inicializado");
             return;
         }
 
-        List<String> list = new ArrayList<>();
+        TMXProfilingOptions options = new TMXProfilingOptions();
 
-        int leni = attributes.size();
-        for (int i = 0; i < leni; ++i) {
-            String value = attributes.getString(i);
-            if (value != null) {
-                list.add(value);
-            }
-        }
+        options.setCustomAttributes(null);
+        options.setSessionID(fingerprintKey);
 
-        TMXProfilingOptions options = new TMXProfilingOptions().setCustomAttributes(list);
         TMXProfiling.getInstance().profile(options, new CompletionNotifier(promise));
     }
 
@@ -96,5 +91,4 @@ public class RNCybersourceDeviceFingerprintModule extends ReactContextBaseJavaMo
             _promise.resolve(map);
         }
     }
-
 }
