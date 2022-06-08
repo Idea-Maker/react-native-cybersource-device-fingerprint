@@ -23,13 +23,13 @@ static NSString *const kRejectCode = @"CyberSourceSDKModule";
 RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(
-                  configure:(NSString *)orgId
-                  // serverURL:(NSString *)serverURL
-                  resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject
-                  ) {
+    configure:(NSString *)orgId
+    serverURL:(NSString *)serverURL
+    resolver:(RCTPromiseResolveBlock)resolve
+    rejecter:(RCTPromiseRejectBlock)reject
+) {
     if (_defender) {
-        reject(kRejectCode, @"CyberSource SDK is already initialised", nil);
+        reject(kRejectCode, @"CyberSource SDK já foi inicializado", nil);
         return;
     }
     
@@ -37,11 +37,11 @@ RCT_EXPORT_METHOD(
     
     @try {
         [_defender configure:@{
-                               TMXOrgID: orgId,
-                               // TMXFingerprintServer: serverURL,
-                               }];
+            TMXOrgID: orgId,
+            TMXFingerprintServer: serverURL,
+        }];
     } @catch (NSException *exception) {
-        reject(kRejectCode, @"Invalid parameters", nil);
+        reject(kRejectCode, @"Parâmetros inválidos", nil);
         return;
     }
     
@@ -49,18 +49,18 @@ RCT_EXPORT_METHOD(
 }
 
 RCT_EXPORT_METHOD(
-                  getSessionID:(NSArray *)attributes
-                  resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject
-                  ) {
+    getSessionID:(NSString *)fingerprintKey
+    resolver:(RCTPromiseResolveBlock)resolve
+    rejecter:(RCTPromiseRejectBlock)reject
+) {
     [_defender profileDeviceUsing:@{
-       TMXCustomAttributes: attributes,
+        TMXSessionID: fingerprintKey,
     } callbackBlock:^(NSDictionary * result) {
         TMXStatusCode statusCode = [[result valueForKey:TMXProfileStatus] integerValue];
         resolve(@{
-                   @"sessionId": [result valueForKey:TMXSessionID],
-                   @"status": @(statusCode),
-                  });
+           @"sessionId": [result valueForKey:TMXSessionID],
+           @"status": @(statusCode),
+        });
     }];
 }
 
