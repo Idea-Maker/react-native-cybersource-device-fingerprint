@@ -12,12 +12,12 @@ buildscript {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    compileSdk 33
+    buildToolsVersion "33.0.0"
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 30
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
     }
@@ -31,8 +31,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.facebook.react:react-native:+'
-    compile files('libs/TMXProfiling-6.0-138.aar')
-    compile files('libs/TMXProfilingConnections-6.0-138.aar')
+    implementation 'com.facebook.react:react-native:+'
+    implementation files('libs/TMXProfiling-6.0-138.aar')
+    implementation files('libs/TMXProfilingConnections-6.0-138.aar')
 }
-  
