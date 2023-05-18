@@ -32,6 +32,6 @@ repositories {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    compileOnly files('libs/TMXProfiling-6.0-138.aar')
-    compileOnly files('libs/TMXProfilingConnections-6.0-138.aar')
+    implementation files('libs/TMXProfiling-6.0-138.aar')
+    implementation files('libs/TMXProfilingConnections-6.0-138.aar')
 }
